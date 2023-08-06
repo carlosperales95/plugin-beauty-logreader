@@ -6,6 +6,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    margin: 0;
 }
 
 h1 {
@@ -29,10 +33,12 @@ h1 {
     margin: 25px 0;
     font-size: 0.5em;
     font-family: sans-serif;
-    width: 100%;
-    max-width: 320px;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    width: 100% !important;
     height: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    table-layout: fixed;
 }
 
 .styled-table thead tr {
@@ -44,6 +50,23 @@ h1 {
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
+}
+
+.logtime{
+    width: 20%;
+}
+
+.logtype {
+    width: 5%;
+}
+
+.logcontent {
+    width: 65%;
+    overflow: auto;
+}
+
+.loguid {
+    width: 10%;
 }
 
 .styled-table tbody tr {
@@ -62,6 +85,8 @@ h1 {
     font-weight: bold;
     color: #009879;
 }
+
+.styled-table td + td { border-left:1px solid #dddddd; }
 
 #drop_area {
     width: 80%;
