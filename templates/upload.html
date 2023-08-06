@@ -1,0 +1,14 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Read logs better {% import %}</h1>
+{% endblock %}
+
+{% block dragdrop %}
+    <div id="drop_area" style="padding:100px; border: 1px solid black">
+        Drag and drop your files here to upload.
+    </div>
+    <div id="upload_progress"></div>
+    <div id="speed"></div>
+{% endblock %}
