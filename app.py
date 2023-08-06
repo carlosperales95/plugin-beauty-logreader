@@ -49,7 +49,7 @@ def parseData():
         uid = line[uid_start : uid_start + 7]
         data['uid'].append(uid)
 
-        content = line[36 + logger_type_end : uid_start]
+        content = line[36 + logger_type_end : uid_start - 8]
         data['content'].append(content)
 
     return data
