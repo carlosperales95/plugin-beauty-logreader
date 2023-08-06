@@ -12,40 +12,11 @@
     <div id="upload_progress"></div>
     <div id="speed"></div>
 {% endblock %}
+
 {% block workspace %}
     <div id="workspace-container">
-        <div id="title-area"></div>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th class="logtime">Timestamp</th>
-                    <th class="logtype">Type</th>
-                    <th class="logcontent">Content</th>
-                    <th class="loguid">uid</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="logtime">[2023-08-03T11:39:58.166646+00:00]</td>
-                    <td class="logtype">INFO</td>
-                    <td class="logcontent">Request to Adyen API /payments</td>
-                    <td class="loguid">942c7e3</td>
-                </tr>
-                <tr class="active-row">
-                    <td class="logtime">[2023-08-03T11:39:58.166646+00:00]</td>
-                    <td class="logtype">INFO</td>
-                    <td class="logcontent">Request to Adyen API /payments</td>
-                    <td class="loguid">942c7e3</td>
-                </tr>
-                <tr class="active-row">
-                    <td class="logtime"></td>
-                    <td class="logtype"></td>
-                    <td class="enhanced logcontent" id="row-content">{"apiVersion":"v70","body":{"merchantAccount":"AdyenTechSupport_2021_CarlosPerales_TEST","shopperReference":"00000000308daa0fd-6887-42d8-a047-bd2dc301fb2a","shopperEmail":"carlos.perales@adyen.com","telephoneNumber":"3106143376","shopperName":{"firstName":"Carlos","lastName":"Perales"},"countryCode":"SE","shopperLocale":"en_US","shopperIP":"192.168.6.10","billingAddress":{"street":"Dollardpad APT","postalCode":"12345","city":"stockholm","houseNumberOrName":"214","country":"SE","stateOrProvince":"SE-N"},"deliveryAddress":{"street":"Dollardpad APT","postalCode":"12345","city":"stockholm","houseNumberOrName":"214","country":"SE","stateOrProvince":"SE-N"},"amount":{"currency":"EUR","value":6400},"reference":"000000003","fraudOffset":"0","browserInfo":{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36","acceptHeader":"*/*"},"shopperInteraction":"Ecommerce","paymentMethod":{"type":"walley","checkoutAttemptId":"ca7df35c-136f-4f85-8f76-a31a5003bda91691064524049DCFF64A0F072BF9B41F39CD8288EF225AC52EDBA51367C6D2F2C63133EAEACCC"},"riskData":{"clientData":"eyJ2ZXJzaW9uIjoiMS4wLjAiLCJkZXZpY2VGaW5nZXJwcmludCI6IkRwcXdVNHpFZE4wMDUwMDAwMDAwMDAwMDAwS1piSVFqNmt6czAwNDUwNjg3MzBjVkI5NGlLekJHTzQwNW0xYjduZkJpeDdSWDNhejgwMDJUWEZScVFVbkdFMDAwMDBZVnhFcjAwMDAwR1ZlczRLOW5NWkdVeTJqOGdGR1Q6NDAiLCJwZXJzaXN0ZW50Q29va2llIjpbXX0="},"lineItems":[{"id":"5","amountExcludingTax":5900,"amountIncludingTax":5900,"taxAmount":0,"description":"Fusion Backpack","quantity":1,"taxPercentage":0,"productUrl":"https://8080-adyenexampl-adyenmagent-7x81ospo3ay.ws-eu102.gitpod.io/fusion-backpack.html","imageUrl":"https://8080-adyenexampl-adyenmagent-7x81ospo3ay.ws-eu102.gitpod.io/media/catalog/product/cache/b1d77ba517fdee4497cbca14c7b5a351/m/b/mb02-gray-0.jpg"},{"id":"shippingCost","amountExcludingTax":500,"amountIncludingTax":500,"taxAmount":0,"description":"Flat Rate - Fixed","quantity":1,"taxPercentage":0}],"additionalData":{"allow3DS2":true},"returnUrl":"https://8080-adyenexampl-adyenmagent-7x81ospo3ay.ws-eu102.gitpod.io/adyen/process/result?merchantReference=000000003","channel":"web","origin":"https://8080-adyenexampl-adyenmagent-7x81ospo3ay.ws-eu102.gitpod.io/"}}</td>
-                    <td class="loguid"></td>
-
-                </tr>
-                <!-- and so on... -->
-            </tbody>
-        </table>
+        {% for table in tables %}
+                {{ table|safe }}
+        {% endfor %}
     </div>
 {% endblock %}

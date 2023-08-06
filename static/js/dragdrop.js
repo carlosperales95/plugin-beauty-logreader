@@ -52,15 +52,15 @@
 //     xhr.send(fd);
 // }, false);
 
-let enhanced = document.getElementsByClassName('enhanced');
-let content = JSON.parse(enhanced[0].textContent);
-console.log(JSON.stringify(content, null, "\t"));
-enhanced[0].textContent = '';
+// let enhanced = document.getElementsByClassName('enhanced');
+// let content = JSON.parse(enhanced[0].textContent);
+// console.log(JSON.stringify(content, null, "\t"));
+// enhanced[0].textContent = '';
 
-let pre = document.createElement("pre");
-pre.id = 'json';
-pre.innerHTML = JSON.stringify(content, undefined, 2);
-console.log(pre);
+// let pre = document.createElement("pre");
+// pre.id = 'json';
+// pre.innerHTML = JSON.stringify(content, undefined, 2);
+// console.log(pre);
 
 enhanced[0].appendChild(pre);
 

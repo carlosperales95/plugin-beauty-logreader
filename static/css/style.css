@@ -38,7 +38,7 @@ h1 {
     width: 100% !important;
     height: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    table-layout: fixed;
+    /* table-layout: fixed; */
 }
 
 .styled-table thead tr {
