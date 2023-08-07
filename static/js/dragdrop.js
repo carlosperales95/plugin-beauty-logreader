@@ -62,7 +62,33 @@
 // pre.innerHTML = JSON.stringify(content, undefined, 2);
 // console.log(pre);
 
-enhanced[0].appendChild(pre);
+// enhanced[0].appendChild(pre);
+
+let table = document.getElementsByTagName('table')[0];
+let tableParts = table.children;
+let tableHeaders = tableParts[0].children;
+let tableRows = tableParts[1].children;
+
+for (var i = 0; i < tableRows.clientHeight; i++) {
+    tableRows[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("helou")
+        let emptyTh = document.createElement('th');
+        let emptyTd = document.createElement('td');
+    
+        let emptyTr = document.createElement('tr');
+        emptyTr.appendChild(emptyTh);
+        emptyTr.appendChild(emptyTd);
+    
+        emptyTr.appendChild(tableRows[i].children[3]);
+        emptyTr.appendChild(emptyTd);
+
+        tableParts[1].appendChild(emptyTr);
+        console.log(tableRows.children.length);
+    })
+}
+
+console.log(tableRows);
 
 
 

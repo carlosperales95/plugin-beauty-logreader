@@ -11,9 +11,14 @@ base_dir = os.path.dirname(__file__)
 def index():
     data = parseData()
     df = pd.DataFrame(data)
-    # df.set_index('timestamp', inplace=True)
+    filterTypeDF(df, ['INFO'])
+    # df = filterUIDDF(df, "942c7e3")
+    # df = filterContent(df, "XNT6LGX5PV5X8N82")
+    df = filterDate(df, "2023-08-03T11:30:03", "2023-08-03T11:50:03")
+
     return render_template('index.html',
-                        tables=[df.to_html(classes='data')])
+                        column_names=df.columns.values, row_data=list(df.values.tolist()),
+                        zip=zip, link_column="content")
 
 
 @app.route('/upload', methods=('POST',))
@@ -38,6 +43,7 @@ def parseData():
     lines = f.readlines()
     for line in lines:
         timestamp = line[:34]
+        timestamp = timestamp[timestamp.find('[') + 1 : timestamp.find(']')]
         data['timestamp'].append(timestamp)
 
         logger_type_end = line[35:].find(':')
@@ -57,3 +63,19 @@ def parseData():
 def sortDF(df):
     return df.sort_values(by=['timestamp'])
 
+def filterTypeDF(df, types):
+    return df[df['type'].isin(types)]
+
+
+def filterUIDDF(df, value):
+    return df[df['uid'].str.contains(value)]
+
+def filterContent(df, value):
+    return df[df['content'].str.contains(value)]
+
+def filterDate (df, start_date, end_date):
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    mask = (df['timestamp'] > start_date) & (df['timestamp'] <= end_date)
+    print(df.loc[mask])
+
+    return df.loc[mask]

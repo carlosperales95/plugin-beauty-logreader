@@ -15,8 +15,86 @@
 
 {% block workspace %}
     <div id="workspace-container">
-        {% for table in tables %}
-                {{ table|safe }}
-        {% endfor %}
+    
+        <table>
+            <tr>
+                {% for col in column_names %}
+                <th>{{col}}</th>
+                {% endfor %}
+            </tr>
+            {% for row in row_data %}
+            <tr class="folded">
+                {% for col, row_ in zip(column_names, row) %}
+                {% if col == link_column %}
+                <td>
+                    {{ row_ }}
+                    <div class="expand" onclick="change(event);"> &darr; </div>
+                </td>
+                {% else %}
+                <td>{{row_}}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        
+        </table>
+        
     </div>
+
+    <script>
+        function change(e){
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+
+            const currentClass = target.parentElement.parentElement.className;
+            switch(currentClass){
+                case "folded":
+                target.parentElement.parentElement.className = "unfolded";
+                expand(target);
+                break;
+                case "unfolded":
+                target.parentElement.parentElement.className = "folded";
+                fold(target);
+                break;
+            }
+        }
+
+        function expand(target) {
+            extraRow = document.createElement('tr');
+            extraRow.style.color = "red";
+
+            emptytd1 = document.createElement('td');
+            emptytd2 = document.createElement('td');
+            emptytd3 = document.createElement('td');
+            contenttd = document.createElement('td');
+
+            pre = document.createElement('pre');
+            pre.className = "json";
+            parentText = target.parentElement.innerText;
+            preText = parentText.substring(parentText.indexOf('{"'), parentText.lastIndexOf('}')+1);
+            jdon = JSON.parse(preText);
+            pre.innerText =  JSON.stringify(jdon, undefined, 2);
+
+            extraRow.appendChild(emptytd1);
+            extraRow.appendChild(emptytd2);
+            contenttd.appendChild(pre);
+            extraRow.appendChild(contenttd);
+            extraRow.appendChild(emptytd3);
+
+            extraRow.style.height = "300px !important";
+            target.innerHTML = '&uarr;';
+            target.parentNode.parentNode.after(extraRow);
+        }
+
+        function fold(target) {
+            sibling = target.parentNode.parentNode.nextSibling;
+            console.log(sibling.children[2].textContent.indexOf('{"'));
+            if(sibling.children[2].textContent.indexOf('{') == 0){
+                sibling.remove();
+            }
+            target.innerHTML = '&darr;';
+
+        }
+        </script>
+
 {% endblock %}
