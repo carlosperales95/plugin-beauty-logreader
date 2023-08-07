@@ -14,7 +14,7 @@ def index():
     filterTypeDF(df, ['INFO'])
     # df = filterUIDDF(df, "942c7e3")
     # df = filterContent(df, "XNT6LGX5PV5X8N82")
-    df = filterDate(df, "2023-08-03T11:30:03", "2023-08-03T11:50:03")
+    # df = filterDate(df, "2023-08-03T11:30:03", "2023-08-03T11:50:03")
 
     return render_template('index.html',
                         column_names=df.columns.values, row_data=list(df.values.tolist()),

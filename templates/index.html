@@ -72,9 +72,9 @@
             pre.className = "json";
             parentText = target.parentElement.innerText;
             preText = parentText.substring(parentText.indexOf('{"'), parentText.lastIndexOf('}')+1);
-            jdon = JSON.parse(preText);
-            pre.innerText =  JSON.stringify(jdon, undefined, 2);
-
+            json = JSON.parse(preText);
+            pre.innerText =  JSON.stringify(json, undefined, 2);
+            
             extraRow.appendChild(emptytd1);
             extraRow.appendChild(emptytd2);
             contenttd.appendChild(pre);
