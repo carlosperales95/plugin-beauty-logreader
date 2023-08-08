@@ -6,16 +6,16 @@
 
 {% block dragdrop %}
     <h1>{% block title %} File import {% endblock %}</h1>
-    <div id="drop_area">
-        Drag and drop your files here to upload.
-    </div>
-    <div id="upload_progress"></div>
-    <div id="speed"></div>
+     <form method="POST" action="" enctype="multipart/form-data">
+      <p><input type="file" name="file" multiple accept=".log"></p>
+      <p><input type="submit" value="Submit"></p>
+    </form>
+
 {% endblock %}
 
 {% block workspace %}
     <div id="workspace-container">
-    
+      {% if row_data %}
         <table>
             <tr>
                 {% for col in column_names %}
@@ -36,9 +36,8 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-        
         </table>
-        
+    {% endif %}
     </div>
 
     <script>
