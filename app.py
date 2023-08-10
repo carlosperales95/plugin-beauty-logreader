@@ -15,6 +15,8 @@ data = {
     'uid': []
 }
 
+df = pd.DataFrame()
+
 # Filters done, only need to add proper logic for requesting these
 # filterTypeDF(df, ['INFO'])
 # df = filterUIDDF(df, "942c7e3")
@@ -52,10 +54,19 @@ def upload_file():
         for line in contents:
             handle.write(line.encode())
     # Create data frame from all log file lines
+    global df
     df = pd.DataFrame(loaded_data)
     return render_template('index.html',
-                           column_names=df.columns.values, row_data=list(df.values.tolist()),
-                           zip=zip, link_column="content")
+                        column_names=df.columns.values, row_data=list(df.values.tolist()),
+                        zip=zip, link_column="content")
+
+@app.route('/filter', methods=['POST'])
+def filter_df():
+    global df
+    df = filterUIDDF(df, "942c7e3")
+    return render_template('index.html',
+                        column_names=df.columns.values, row_data=list(df.values.tolist()),
+                        zip=zip, link_column="content")
 
 
 def parseData(filename, data):

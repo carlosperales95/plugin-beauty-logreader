@@ -6,16 +6,21 @@
 
 {% block dragdrop %}
     <h1>{% block title %} File import {% endblock %}</h1>
-     <form method="POST" action="" enctype="multipart/form-data">
-      <p><input type="file" name="file" multiple accept=".log"></p>
-      <p><input type="submit" value="Submit"></p>
+    <form method="POST" action="" enctype="multipart/form-data">
+        <p><input type="file" name="file" multiple accept=".log"></p>
+        <p><input type="submit" value="Submit"></p>
     </form>
 
 {% endblock %}
 
 {% block workspace %}
     <div id="workspace-container">
-      {% if row_data %}
+        <div class="filter-bar">
+            <form method="POST" action="{{ url_for('filter_df') }}" enctype="multipart/form-data">
+                <p><input type="submit" value="Filter"></p>
+            </form>
+        </div>
+    {% if row_data %}
         <table>
             <tr>
                 {% for col in column_names %}
