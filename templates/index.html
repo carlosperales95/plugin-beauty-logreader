@@ -5,22 +5,50 @@
 {% endblock %}
 
 {% block dragdrop %}
-    <h1>{% block title %} File import {% endblock %}</h1>
-    <form method="POST" action="" enctype="multipart/form-data">
-        <p><input type="file" name="file" multiple accept=".log"></p>
-        <p><input type="submit" value="Submit"></p>
-    </form>
 
 {% endblock %}
 
 {% block workspace %}
     <div id="workspace-container">
-        <div class="filter-bar">
-            <form method="POST" action="{{ url_for('filter_df') }}" enctype="multipart/form-data">
-                <p><input type="submit" value="Filter"></p>
-            </form>
-        </div>
     {% if row_data %}
+        <div class="filter-bar">
+            <form method="POST" action="{{ url_for('filter_df') }}" enctype="multipart/form-data" class="filter-form">
+                <p><label for="">From</label><input type="datetime-local" name="start-date" my-date-format="YYYY/MM/DDThh:mm:ss"></p>
+                <p><label for="">To</label><input type="datetime-local" name="end-date" my-date-format="YYYY/MM/DDThh:mm:ss"></p>
+                <p><label for="">UID</label><input type="dropdown" name="uid" ></p>
+                <p><label for="">Find</label><input type="text" name="find" ></p>
+                <p>
+                    <label for="">Type</label>
+                    <select name="type">
+                        <option value="NONE">-</option>
+                        <option value="INFO">INFO</option>
+                        <option value="NOTIFICATION">NOTIFICATION</option>
+                        <option value="DEBUG">DEBUG</option>
+                        <option value="ERROR">ERROR</option>
+                    </select>
+                </p>
+                <p><label for=""></label><input type="submit" value="Apply"></p>
+            </form>
+            {% if filters %}
+            <div class="applied-filter-bar">
+                <div class="filter-items">
+                    {% for date in filters['date'] %}
+                        <p class="filter-item">{{date[0]}} - {{date[1]}} <span>&#x2715</span></p>
+                    {% endfor %}
+                    {% for uid in filters['uid'] %}
+                        <p class="filter-item">uid: {{uid}} <span>&#x2715</span></p>
+                    {% endfor %}
+                    {% for text in filters['find'] %}
+                        <p class="filter-item">"{{text}}" <span>&#x2715</span></p>
+                    {% endfor %}
+                    {% for type in filters['type'] %}
+                        <p class="filter-item">type: {{type}} <span>&#x2715</span></p>
+                    {% endfor %}
+                </div>
+                <p><label for=""></label><input type="submit" class="btn-secondary" value="Clear"></p>
+            </div>
+            {% endif %}
+        </div>
         <table>
             <tr>
                 {% for col in column_names %}
@@ -42,6 +70,8 @@
             </tr>
             {% endfor %}
         </table>
+    {% else %}
+        <h3 class="alert"> No logs imported. Upload log files to load content!</h3>
     {% endif %}
     </div>
 

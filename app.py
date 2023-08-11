@@ -3,6 +3,8 @@ import os
 from werkzeug.utils import secure_filename
 import pandas as pd
 import uuid
+from dateutil.parser import parse
+import datetime
 
 app = Flask(__name__)
 base_dir = os.path.dirname(__file__)
@@ -15,7 +17,17 @@ data = {
     'uid': []
 }
 
+df_filters = {
+    'date': [],
+    'type': [],
+    'find': [],
+    'uid': []
+}
+
 df = pd.DataFrame()
+filtered_df = pd.DataFrame()
+
+show_upload = True
 
 # Filters done, only need to add proper logic for requesting these
 # filterTypeDF(df, ['INFO'])
@@ -25,9 +37,21 @@ df = pd.DataFrame()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    global df, filtered_df
+    if(df.size > 0):
+        filtered_df = df
+        return render_template('index.html',
+                        column_names=df.columns.values, row_data=list(df.values.tolist()),
+                        zip=zip, link_column="content")
+    else:
+        return render_template('index.html')
 
-@app.route('/', methods=['POST'])
+@app.route('/upload')
+def show_upload():
+    return render_template('upload.html')
+
+
+@app.route('/upload', methods=['POST'])
 def upload_file():
     # Create new case folder
     unique_foldername = str(uuid.uuid4())
@@ -54,19 +78,45 @@ def upload_file():
         for line in contents:
             handle.write(line.encode())
     # Create data frame from all log file lines
-    global df
+    global df, filtered_df
     df = pd.DataFrame(loaded_data)
+    filtered_df = df
+    print(filtered_df)
     return render_template('index.html',
                         column_names=df.columns.values, row_data=list(df.values.tolist()),
                         zip=zip, link_column="content")
 
 @app.route('/filter', methods=['POST'])
 def filter_df():
-    global df
-    df = filterUIDDF(df, "942c7e3")
+    global df_filters, filtered_df
+    start_date = ''
+    # Update FIlter list based on request
+    for key, value in request.form.items():
+        print('key: ' + key + " val: " + value)
+        if(value == ''):
+            continue
+        if(key == 'uid'):
+            df_filters[key].append(value)
+            continue
+        if(key == 'find'):
+            df_filters['find'] = [value]
+            continue
+        if(key == 'type'):
+            if(value != 'NONE'):
+                df_filters['type'].append(value)
+            continue
+        if(key == 'start-date'):
+            start_date = value
+            continue
+        if(key == 'end-date'):
+            if(start_date != ''):
+                df_filters['date'] = [[start_date, value]]
+            continue
+    # Apply all filters and display filtered dataframe
+    filtered_df = apply_filters()
     return render_template('index.html',
-                        column_names=df.columns.values, row_data=list(df.values.tolist()),
-                        zip=zip, link_column="content")
+                        column_names=filtered_df.columns.values, row_data=list(filtered_df.values.tolist()),
+                        zip=zip, link_column="content", filters=df_filters)
 
 
 def parseData(filename, data):
@@ -75,7 +125,7 @@ def parseData(filename, data):
     for line in lines:
         timestamp = line[:34]
         timestamp = timestamp[timestamp.find('[') + 1 : timestamp.find(']')]
-        data['timestamp'].append(timestamp)
+        data['timestamp'].append(timestamp[:19])
 
         logger_type_end = line[35:].find(':')
         logger_type = line[35 : 35 + logger_type_end]
@@ -93,6 +143,26 @@ def parseData(filename, data):
         data['content'].append(content)
 
     return data, lines
+
+def apply_filters():
+    global df_filters, df, filtered_df
+    filtered_df = df
+    for date in df_filters['date']:
+        start = datetime.datetime.strptime(date[0], '%Y-%m-%dT%H:%M')
+        end = datetime.datetime.strptime(date[1], '%Y-%m-%dT%H:%M')
+        filtered_df = filterDate(filtered_df, start, end)
+
+    for text in df_filters['find']:
+        filtered_df = filterContent(filtered_df, text)
+
+    for uid_filter in df_filters['uid']:
+        filtered_df = filterUIDDF(filtered_df, uid_filter)
+    
+    
+    filtered_df = filterTypeDF(filtered_df, df_filters['type'])
+
+    return filtered_df
+    
 
 def sortDF(df):
     return df.sort_values(by=['timestamp'])

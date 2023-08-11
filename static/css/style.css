@@ -12,6 +12,20 @@ body {
     margin: 0;
 }
 
+.navbar {
+    background-color: #009879;
+}
+
+.navbar-brand,
+.nav-link {
+    color: #f3f3f3;
+}
+
+.navbar-brand:hover,
+.nav-link:hover {
+    color: black;
+}
+
 h1 {
     border: 2px #eee solid;
     color: brown;
@@ -21,7 +35,7 @@ h1 {
 
 #workspace-container {
     width: 100%;
-    overflow:unset;
+    overflow: unset;
 }
 
 /* #row-content {
@@ -30,13 +44,13 @@ h1 {
 
 table {
     border-collapse: collapse;
-    margin: 25px 0;
     font-size: 0.8em;
     font-family: sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-
+    margin-bottom: 5%;
     table-layout:fixed;
     width:100%;
+    margin-top: 1%;
 }
 
 table tr th {
@@ -116,3 +130,93 @@ table td + td { border-left:1px solid #dddddd; }
     border: 1px solid black;
     text-align: center;
 }
+.applied-filter-bar,
+.filter-bar {
+    width: 100%;
+    margin-top: 2%;
+}
+
+.filter-items,
+.applied-filter-bar,
+.filter-form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: center;
+
+}
+
+.filter-items {
+    flex-wrap: wrap;
+    padding: 2%;
+}
+
+.filter-item {
+    font-size: 12px;
+    margin-right: 2%;
+    border: solid 1px #48584B;
+    padding: 0.2rem;
+    border-radius: 5px;
+    background-color: #f3f3f3;
+}
+
+.btn-secondary {
+    width: 120%;
+    height: 80%;
+    background-color: #009879;
+    color: #f3f3f3;
+    border-radius: 5px;
+    font-size: 15px;
+    border: none;
+    font-weight: bold;
+}
+
+.filter-form p input {
+    width: 100%;
+}
+
+.filter-form p label {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+}
+
+.filter-form p:last-of-type input {
+    width: 120%;
+    height: 100%;
+    background-color: #009879;
+    color: #f3f3f3;
+    border-radius: 5px;
+    font-size: 15px;
+    border: none;
+    font-weight: bold;
+}
+
+
+.filter-form p:nth-of-type(3) input,
+.filter-form p:nth-of-type(3) label,
+.filter-form p:nth-of-type(5) label,
+.filter-form p:nth-of-type(5) select {
+    width: 70%;
+}
+
+.filter-form p:nth-of-type(4) label,
+.filter-form p:nth-of-type(4) input {
+    width: 110%;
+    margin-right: 4%;
+}
+
+
+.alert {
+    /* Center vertically and horizontally */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #48584B;
+    font-weight: bold;
+}
+
+
