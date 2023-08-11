@@ -5,6 +5,7 @@ import pandas as pd
 import uuid
 from dateutil.parser import parse
 import datetime
+from flask_paginate import Pagination, get_page_args
 
 app = Flask(__name__)
 base_dir = os.path.dirname(__file__)
@@ -81,11 +82,10 @@ def upload_file():
     global df, filtered_df
     df = pd.DataFrame(loaded_data)
     filtered_df = df
-    print(filtered_df)
     return render_template('index.html',
                         column_names=df.columns.values, row_data=list(df.values.tolist()),
                         zip=zip, link_column="content")
-
+    
 @app.route('/filter', methods=['POST'])
 def filter_df():
     global df_filters, filtered_df
@@ -114,10 +114,53 @@ def filter_df():
             continue
     # Apply all filters and display filtered dataframe
     filtered_df = apply_filters()
-    return render_template('index.html',
-                        column_names=filtered_df.columns.values, row_data=list(filtered_df.values.tolist()),
-                        zip=zip, link_column="content", filters=df_filters)
 
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                        per_page_parameter='per_page')
+    total = len(filtered_df)
+        
+    pagination_users = get_entries(offset=offset, per_page=per_page)
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+    
+    print(request.args.get('page'))
+    if (request.args.get('page') is not None):
+        page = request.args.get('page')
+
+    return render_template('index.html',
+                        column_names=df.columns.values,
+                        row_data=list(pagination_users.values.tolist()),
+                        page=page,
+                        per_page=per_page,
+                        pagination=pagination,
+                        zip=zip,
+                        filters=df_filters,
+                        link_column="content")
+
+@app.route('/filter')
+def show_filtered():
+    global df_filters, filtered_df
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                        per_page_parameter='per_page')
+    total = len(filtered_df)
+        
+    pagination_users = get_entries(offset=offset, per_page=per_page)
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+    
+    print(request.args.get('page'))
+    if (request.args.get('page') is not None):
+        page = request.args.get('page')
+
+    return render_template('index.html',
+                        column_names=df.columns.values,
+                        row_data=list(pagination_users.values.tolist()),
+                        page=page,
+                        per_page=per_page,
+                        pagination=pagination,
+                        zip=zip,
+                        filters=df_filters,
+                        link_column="content")
 
 def parseData(filename, data):
     f = open(filename,"r")
@@ -184,3 +227,6 @@ def filterDate (df, start_date, end_date):
 
     return df.loc[mask]
 
+
+def get_entries(offset=0, per_page=10):
+    return filtered_df[offset: offset + per_page]

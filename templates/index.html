@@ -49,6 +49,9 @@
             </div>
             {% endif %}
         </div>
+        {% if pagination %}
+            {{ pagination.links }}
+        {% endif %}
         <table>
             <tr>
                 {% for col in column_names %}
@@ -70,6 +73,9 @@
             </tr>
             {% endfor %}
         </table>
+        {% if pagination %}
+            {{ pagination.links }}
+        {% endif %}
     {% else %}
         <h3 class="alert"> No logs imported. Upload log files to load content!</h3>
     {% endif %}

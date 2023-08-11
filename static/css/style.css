@@ -42,6 +42,16 @@ h1 {
     width: 100px;
 } */
 
+.page-item.active .page-link{
+    background-color: #009879;
+    border-color: #009879;
+    color: #f3f3f3;
+}
+
+.page-item .page-link {
+    color: #009879;
+}
+
 table {
     border-collapse: collapse;
     font-size: 0.8em;
