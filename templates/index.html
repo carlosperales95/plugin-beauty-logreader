@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 
 {% block sidebar %}
-    
 {% endblock %}
 
-{% block dragdrop %}
+{% block title %} Filter Plugin Logs {% endblock %}
 
+{% block dragdrop %}
 {% endblock %}
 
 {% block workspace %}
     <div id="workspace-container">
-    {% if row_data %}
         <div class="filter-bar">
             <form method="POST"
             action="{{ url_for('filter_df', filename=file_uid) }}"
@@ -121,9 +120,7 @@
             </div>
             {% endif %}
         </div>
-        {% if pagination %}
-            <!-- {{ pagination.links }} -->
-        {% endif %}
+    {% if row_data %}
         <table>
             <tr>
                 {% for col in column_names %}

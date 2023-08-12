@@ -48,7 +48,7 @@
                             {% if filepath[-28:] == file_uid %}
                                 <a
                                 href="{{ url_for('show_filtered', filename=filepath[-28:]) }}"
-                                class="list-group-item list-group-item-action py-2 ripple active"
+                                class="list-group-item list-group-item-action py-2 ripple"
                                 aria-current="true"
                                 >
                                     <span>{{filepath[-28:]}}</span>
@@ -69,6 +69,13 @@
                             action="{{ url_for('clear') }}">
                                 <input type="submit" class="btn-primary" value="Clear Cases">
                             </form>
+                        {% else %}
+                            <p
+                            class="list-group-item list-group-item-action py-2 ripple nohover"
+                            aria-current="true"
+                            >
+                                <span>No imported cases |__|</span>
+                        </p>
                         {% endif %}
                     </div>
                 </div>

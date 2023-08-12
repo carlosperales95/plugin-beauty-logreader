@@ -108,8 +108,7 @@ def show_filtered(filename):
     case_names = get_cases(cases_path)
     case_folder_path = os.path.join(cases_path, filename)
     f = os.path.join(case_folder_path, 'case.log')
-    if os.path.isfile(f):
-        load_data, lines = parse_file_data(f, data)
+    load_data, lines = parse_file_data(f, data)
 
     df = pd.DataFrame(load_data)
     filtered_df = df

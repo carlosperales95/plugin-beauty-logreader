@@ -364,10 +364,13 @@ table td + td { border-left:1px solid #dddddd; }
 
 .alert {
     /* Center vertically and horizontally */
-    position: absolute;
+    /* position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 60%;
+    transform: translate(-50%, -50%); */
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 10%;
     text-align: center;
     color: #48584B;
     font-weight: bold;
@@ -389,4 +392,13 @@ table td + td { border-left:1px solid #dddddd; }
 
 .upload-container input {
     width: 50%;
+}
+
+.nohover:hover {
+    background-color: transparent;
+    color: #f3f3f3;
+}
+
+.nohover {
+    font-size: 14px;
 }
