@@ -38,13 +38,23 @@
                 <div class="position-sticky">
                     <div class="list-group list-group-flush mx-3 mt-4">
                         {% for filepath in case_dirs %}
-                            <a
-                            href="{{ url_for('show_filtered', filename=filepath[-28:]) }}"
-                            class="list-group-item list-group-item-action py-2 ripple"
-                            aria-current="true"
-                            >
-                                <span>{{filepath[-28:]}}</span>
-                            </a>
+                            {% if filepath[-28:] == file_uid %}
+                                <a
+                                href="{{ url_for('show_filtered', filename=filepath[-28:]) }}"
+                                class="list-group-item list-group-item-action py-2 ripple active"
+                                aria-current="true"
+                                >
+                                    <span>{{filepath[-28:]}}</span>
+                                </a>
+                            {% else %}
+                                <a
+                                href="{{ url_for('show_filtered', filename=filepath[-28:]) }}"
+                                class="list-group-item list-group-item-action py-2 ripple"
+                                aria-current="true"
+                                >
+                                    <span>{{filepath[-28:]}}</span>
+                                </a>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

@@ -25,7 +25,6 @@ df_filters = {
 
 df = pd.DataFrame()
 filtered_df = pd.DataFrame()
-show_upload = True
 case_names = []
 
 ### ENDPOINTS
@@ -69,9 +68,7 @@ def upload_file():
             handle.write(line.encode())
     
     # Create data frame from all log file lines
-    global df, filtered_df, case_names
-    df = pd.DataFrame(loaded_data)
-    filtered_df = df
+    global case_names
     case_names = get_cases(cases_path)
     return redirect(url_for('show_filtered', filename=unique_foldername))
 
@@ -86,16 +83,24 @@ def filter_df(filename):
 
 @app.route('/<filename>')
 def show_filtered(filename):
-    global df, df_filters, filtered_df, case_names, cases_path
+    global df, df_filters, filtered_df, case_names, cases_path, data
+    data = {
+        'timestamp': [],
+        'type': [],
+        'content': [],
+        'uid': []
+    }
+
     case_folder_path = os.path.join(cases_path, filename)
     f = os.path.join(case_folder_path, 'case.log')
     if os.path.isfile(f):
-        loaded_data, lines = parse_file_data(f, data)
-    
-    df = pd.DataFrame(loaded_data)
+        load_data, lines = parse_file_data(f, data)
+
+    df = pd.DataFrame(load_data)
     filtered_df = df
     # Apply all filters and display filtered dataframe
-    filtered_df = apply_filters()
+    filtered_df = apply_filters(filtered_df)
+    
     page, per_page, offset = get_page_args(page_parameter='page',
                                         per_page_parameter='per_page')
     total = len(filtered_df)
@@ -164,20 +169,20 @@ def parse_file_data(filename, data):
     return data, lines
 
 # Apply all filters in df_filters
-def apply_filters():
-    global df_filters, df, filtered_df
-    filtered_df = df
+def apply_filters(df):
+    f_df = df
+    print(len(f_df))
     if(df_filters['date'] != []):
         for date in df_filters['date']:
             start = datetime.datetime.strptime(date[0], '%Y-%m-%dT%H:%M')
             end = datetime.datetime.strptime(date[1], '%Y-%m-%dT%H:%M')
-            filtered_df = filter_df_between_dates(filtered_df, start, end)
-        
-    filtered_df = find_df_contents(filtered_df, df_filters['find'])
-    filtered_df = filter_df_uids(filtered_df, df_filters['uid'])
-    filtered_df = filter_df_types(filtered_df, df_filters['type'])
-
-    return filtered_df
+            f_df = filter_df_between_dates(f_df, start, end)
+    print(len(f_df))
+    f_df = find_df_contents(f_df, df_filters['find'])
+    f_df = filter_df_uids(f_df, df_filters['uid'])
+    f_df = filter_df_types(f_df, df_filters['type'])
+    print(len(f_df))
+    return f_df
     
 # Sorting DataFrame ASC
 def sort_df(df):
