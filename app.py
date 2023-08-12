@@ -184,17 +184,14 @@ def parse_file_data(filename, data):
 # Apply all filters in df_filters
 def apply_filters(df):
     f_df = df
-    print(len(f_df))
     if(df_filters['date'] != []):
         for date in df_filters['date']:
             start = datetime.datetime.strptime(date[0], '%Y-%m-%dT%H:%M')
             end = datetime.datetime.strptime(date[1], '%Y-%m-%dT%H:%M')
             f_df = filter_df_between_dates(f_df, start, end)
-    print(len(f_df))
     f_df = find_df_contents(f_df, df_filters['find'])
     f_df = filter_df_uids(f_df, df_filters['uid'])
     f_df = filter_df_types(f_df, df_filters['type'])
-    print(len(f_df))
     return f_df
     
 # Sorting DataFrame ASC
@@ -225,13 +222,10 @@ def find_df_contents(df, values):
 def filter_df_between_dates (df, start_date, end_date):
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     mask = (df['timestamp'] > start_date) & (df['timestamp'] <= end_date)
-    print(df.loc[mask])
-
     return df.loc[mask]
 
 # Get df as entries filtered by offset and pagination limit
 def get_entries(df, offset=0, per_page=10):
-    # print(df[offset: offset + per_page])
     return df[offset: offset + per_page]
 
 
