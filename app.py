@@ -63,21 +63,24 @@ def upload_file():
     for uploaded_file in request.files.getlist('file'):
         if uploaded_file.filename != '':
             uploaded_file.save(os.path.join(case_folder_path, uploaded_file.filename))
-    
+    index = 0
     # Parse each file data into data obj and remove uploaded files
     for filename in os.listdir(case_folder_path):
         f = os.path.join(case_folder_path, filename)
         if os.path.isfile(f):
+            if index > 0:
+                contents.append('\n')
             loaded_data, lines = parse_file_data(os.path.join(case_folder_path, filename), data)
             for line in lines:
                 contents.append(line)
             # Remove temp_uploaded files from newly created folder
             os.remove(os.path.join(case_folder_path, filename))
+            index+=1
     
     # Write all files log lines to case.log
     with open(my_filename, "wb") as handle:
-        for line in contents:
-            handle.write(line.encode())
+        for content in contents:
+            handle.write(content.encode())
     
     # Create data frame from all log file lines
     global case_names
@@ -193,7 +196,7 @@ def apply_filters(df):
     f_df = filter_df_uids(f_df, df_filters['uid'])
     f_df = filter_df_types(f_df, df_filters['type'])
     return f_df
-    
+
 # Sorting DataFrame ASC
 def sort_df(df):
     return df.sort_values(by=['timestamp'])
