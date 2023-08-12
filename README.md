@@ -6,9 +6,9 @@ Current Compatibilities:
 - SFCC cartrdige logs (NOT YET, PLANNED SOON)
 
 1. Clone the repo
-2. `cd` into the project folder (`/plugin-beauty-logreader`) and create a virtual environment for this python app (replace `{name_of_your_env}`)
+2. `cd` into the project folder (`/plugin-beauty-logreader`) and create a virtual environment for this python app (replace `{name_of_your_env}` - example: `env`)
 ```
-python -m venv {name_of_your_env (e.g. testenv)}
+python -m venv {name_of_your_env}
 ```
 3. Create `/cases` folder
 The app needs a cases folder to save all of your imports. This way you can access them later!
