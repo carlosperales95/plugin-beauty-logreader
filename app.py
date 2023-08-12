@@ -1,6 +1,7 @@
 import os
 import shortuuid
 import datetime
+import shutil
 import pandas as pd
 from flask_paginate import Pagination, get_page_args
 from flask import Flask, render_template, request, url_for, redirect
@@ -32,11 +33,22 @@ case_names = []
 def index():
     global df, filtered_df, cases_path, case_names
     case_names = get_cases(cases_path)
-    return render_template('index.html', case_dirs=case_names, no_filters=filters_empty(df_filters))
+    return render_template('index.html',
+                        case_dirs=case_names,
+                        no_filters=filters_empty(df_filters))
+
+@app.route('/clear-cases')
+def clear():
+    global case_names
+    clear_cases(cases_path)
+    return redirect(url_for('index'))
+
 
 @app.route('/upload')
 def show_upload():
-    return render_template('upload.html')
+    case_names = get_cases(cases_path)
+    return render_template('upload.html',
+                        case_dirs=case_names)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -90,7 +102,7 @@ def show_filtered(filename):
         'content': [],
         'uid': []
     }
-
+    case_names = get_cases(cases_path)
     case_folder_path = os.path.join(cases_path, filename)
     f = os.path.join(case_folder_path, 'case.log')
     if os.path.isfile(f):
@@ -281,3 +293,10 @@ def filters_empty(filters):
         'uid': []
     }
     return empty_filters == filters
+
+def clear_cases(rootdir):
+    case_names = []
+    for file in os.listdir(rootdir):
+        d = os.path.join(rootdir, file)
+        if os.path.isdir(d):
+            shutil.rmtree(d)

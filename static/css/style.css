@@ -1,14 +1,15 @@
 body {
     /* background-color: blue; */
-    min-width: 1200px;
-    min-height: 160vh;
-
+    min-width: 1400px;
+    min-height: 100vh;
+    /* overflow: scroll; */
 }
 
 main {
     display: flex;
     flex-direction: row;
     margin: 0;
+    min-height: 100vh;
 }
 
 .container {
@@ -16,18 +17,25 @@ main {
     flex-direction: column;
     align-items: center;
     min-width: 80%;
-    max-width: 100%;
+    width: 100%;
+    max-width: 80%;
     margin: 1%;
+    margin-top: 0;
 }
 
 /* Sidebar */
 .sidebar {
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-    width: 20%;
+    width: 15%;
     z-index: 600;
-    height: 100%;
+    /* height: 100%; */
     background-color: #009879;
-    min-height: 140vh;
+    flex-basis: 100%;
+    /* min-height: 140vh; */
+}
+
+.list-group {
+    margin-top: 30%;
 }
 
 .list-group-item.active {
@@ -40,6 +48,8 @@ main {
     color: #f3f3f3;
     font-size: 13px;
     font-weight: bold;
+    padding-left: 1%;
+    margin-top: 2px;
 }
 
 .sidebar {
@@ -62,8 +72,18 @@ main {
 
 }
 
+header {
+    min-width: 1400px;
+    width: 100%;
+}
+
+#navbarNav{
+    width: 100%;
+}
+
 .navbar {
     background-color: #009879;
+    width: 100%;
 }
 
 .navbar-brand,
@@ -74,6 +94,25 @@ main {
 .navbar-brand:hover,
 .nav-link:hover {
     color: black;
+    cursor: pointer;
+}
+
+#sidebar-toggle {
+    position: absolute;
+    z-index: 999;
+    color: #f3f3f3;
+    font-size: 35px;
+    background-color: #009879;
+    border: solid 1px #f3f3f3;
+    border-radius: 5px;
+    text-align: center;
+    width: 5rem;
+    
+}
+
+#sidebar-toggle:hover {
+    cursor: pointer;
+    background-color: #01775f;
 }
 
 h1 {
@@ -107,7 +146,7 @@ table {
     font-size: 0.8em;
     font-family: sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    margin-bottom: 5%;
+    margin-bottom: 2%;
     table-layout:fixed;
     width:100%;
     margin-top: 1%;
@@ -141,7 +180,7 @@ table tr {
 
 table tr td,
 table tr th {
-    width: 10%;
+    width: 20%;
 }
 
 table tr:nth-of-type(even) {
@@ -150,18 +189,16 @@ table tr:nth-of-type(even) {
 
 table tr td:nth-of-type(3),
 table tr th:nth-of-type(3) {
-    width: 80%;
+    width: 70%;
 }
 
 table tr td:nth-of-type(3) {
     text-align: left;
 }
 
-table tr td:nth-of-type(2),
 table tr td:last-of-type,
-table tr th:nth-of-type(2),
 table tr th:last-of-type {
-    width: 5%;
+    width: 10%;
 }
 
 table tr:last-of-type {
@@ -193,6 +230,7 @@ table td + td { border-left:1px solid #dddddd; }
 
 .applied-filter-bar {
     width: 100%;
+    padding-right: 2%;
 }
 
 .filter-bar {
@@ -212,6 +250,10 @@ table td + td { border-left:1px solid #dddddd; }
 
 }
 
+.applied-filter-bar .clear-form {
+    width: 20%;
+}
+
 .filter-form {
     padding: 2%;
 }
@@ -219,6 +261,16 @@ table td + td { border-left:1px solid #dddddd; }
 .filter-items {
     flex-wrap: wrap;
     padding: 2%;
+    width: 80%;
+}
+
+.collapsed {
+    display: none;
+    flex-basis: 0%;
+}
+
+.expanded {
+    padding-left: 5%;
 }
 
 .filter-item {
@@ -240,16 +292,40 @@ table td + td { border-left:1px solid #dddddd; }
 }
 
 .btn-secondary {
-    width: 120%;
+    width: 100%;
     height: 80%;
-    background-color: #009879;
-    color: #f3f3f3;
+    background-color: #f3f3f3;
+    color: #009879;
+    border: #009879 solid 1px;
     border-radius: 5px;
     font-size: 15px;
-    border: none;
     font-weight: bold;
 }
 
+.btn-secondary:hover {
+    background-color: #009879;
+    color: #f3f3f3;
+    border: none;
+}
+
+.btn-primary {
+    margin-top: 3%;
+    width: 100%;
+    height: 100%;
+    background-color: #009879;
+    color: #f3f3f3;
+    border: 1px solid #f3f3f3;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #01775f;
+    border: 1px solid #f3f3f3;
+}
+
+.filter-form p,
 .filter-form p input {
     width: 100%;
 }
@@ -261,7 +337,7 @@ table td + td { border-left:1px solid #dddddd; }
 }
 
 .filter-form p:last-of-type input {
-    width: 120%;
+    width: 100%;
     height: 100%;
     background-color: #009879;
     color: #f3f3f3;
@@ -298,3 +374,19 @@ table td + td { border-left:1px solid #dddddd; }
 }
 
 
+.upload-container {
+    width: 50%;
+    margin: 5%;
+    margin-left: 5%;
+    padding: 5%;
+    border: solid 1px #48584B;
+}
+
+.upload-container h1 {
+    margin-bottom: 4%;
+    width: 80%;
+}
+
+.upload-container input {
+    width: 50%;
+}

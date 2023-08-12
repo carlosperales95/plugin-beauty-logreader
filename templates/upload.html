@@ -6,11 +6,13 @@
 {% endblock %}
 
 {% block dragdrop %}
-    <h1>{% block title %} File import {% endblock %}</h1>
-    <form method="POST" action="" enctype="multipart/form-data">
-        <p><input type="file" name="file" multiple accept=".log"></p>
-        <p><input type="submit" value="Submit"></p>
-    </form>
+    <div class="upload-container">
+        <h1>{% block title %} File import {% endblock %}</h1>
+        <form method="POST" class="file-form" action="" enctype="multipart/form-data">
+            <p><input class="btn-primary" type="file" name="file" multiple accept=".log"></p>
+            <p><input class="btn-secondary" type="submit" value="Submit"></p>
+        </form>
+    <div>
 
 {% endblock %}
 
