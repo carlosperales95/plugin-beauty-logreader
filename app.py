@@ -1,5 +1,5 @@
 import os
-import uuid
+import shortuuid
 import datetime
 import pandas as pd
 from flask_paginate import Pagination, get_page_args
@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 base_dir = os.path.dirname(__file__)
-cases_path = 'cases'
+cases_path = os.path.join(base_dir, 'cases')
 
 data = {
     'timestamp': [],
@@ -26,18 +26,14 @@ df_filters = {
 df = pd.DataFrame()
 filtered_df = pd.DataFrame()
 show_upload = True
+case_names = []
 
 ### ENDPOINTS
 @app.route('/')
 def index():
-    global df, filtered_df
-    if(df.size > 0):
-        filtered_df = df
-        return render_template('index.html',
-                        column_names=df.columns.values, row_data=list(df.values.tolist()),
-                        zip=zip, link_column="content")
-    else:
-        return render_template('index.html')
+    global df, filtered_df, cases_path, case_names
+    case_names = get_cases(cases_path)
+    return render_template('index.html', case_dirs=case_names)
 
 @app.route('/upload')
 def show_upload():
@@ -46,8 +42,8 @@ def show_upload():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     # Create new case folder
-    unique_foldername = str(uuid.uuid4())
-    case_folder_path = os.path.join(base_dir, cases_path, unique_foldername)
+    unique_foldername = "[CASE]" + str(shortuuid.uuid())
+    case_folder_path = os.path.join(cases_path, unique_foldername)
     os.mkdir(case_folder_path)
 
     my_filename = os.path.join(case_folder_path, 'case.log')
@@ -56,6 +52,7 @@ def upload_file():
     for uploaded_file in request.files.getlist('file'):
         if uploaded_file.filename != '':
             uploaded_file.save(os.path.join(case_folder_path, uploaded_file.filename))
+    
     # Parse each file data into data obj and remove uploaded files
     for filename in os.listdir(case_folder_path):
         f = os.path.join(case_folder_path, filename)
@@ -65,14 +62,17 @@ def upload_file():
                 contents.append(line)
             # Remove temp_uploaded files from newly created folder
             os.remove(os.path.join(case_folder_path, filename))
+    
     # Write all files log lines to case.log
     with open(my_filename, "wb") as handle:
         for line in contents:
             handle.write(line.encode())
+    
     # Create data frame from all log file lines
-    global df, filtered_df
+    global df, filtered_df, case_names
     df = pd.DataFrame(loaded_data)
     filtered_df = df
+    case_names = get_cases(cases_path)
     return redirect(url_for('show_filtered', filename=unique_foldername))
 
 
@@ -84,9 +84,16 @@ def filter_df(filename):
     return redirect(url_for('show_filtered', filename=filename))
 
 
-@app.route('/<filename>/filter')
+@app.route('/<filename>')
 def show_filtered(filename):
-    global df_filters, filtered_df
+    global df, df_filters, filtered_df, case_names, cases_path
+    case_folder_path = os.path.join(cases_path, filename)
+    f = os.path.join(case_folder_path, 'case.log')
+    if os.path.isfile(f):
+        loaded_data, lines = parse_file_data(f, data)
+    
+    df = pd.DataFrame(loaded_data)
+    filtered_df = df
     # Apply all filters and display filtered dataframe
     filtered_df = apply_filters()
     page, per_page, offset = get_page_args(page_parameter='page',
@@ -107,7 +114,8 @@ def show_filtered(filename):
                         file_uid = filename,
                         zip = zip,
                         filters = df_filters,
-                        link_column = "content")
+                        link_column = "content",
+                        case_dirs=case_names)
 
 @app.route('/<filename>/remove-filter', methods=['POST'])
 def remove_filter(filename):
@@ -250,3 +258,11 @@ def remove_filter(df_filters, items):
             df_filters['date'] = []
             continue
     return df_filters
+
+def get_cases(rootdir):
+    paths = []
+    for file in os.listdir(rootdir):
+        d = os.path.join(rootdir, file)
+        if os.path.isdir(d):
+            paths.append(d)
+    return paths
