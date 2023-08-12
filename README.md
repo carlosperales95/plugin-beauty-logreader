@@ -1,10 +1,12 @@
 # plugin-beauty-logreader
 
-Current Compatibilities:
-- Adyen Adobe Commerce plugin logs
-- Shopware6 plugin logs (NOT YET, PLANNED SOON)
-- SFCC cartrdige logs (NOT YET, PLANNED SOON)
 
+> [!IMPORTANT]
+> At the moment the only supported plugin format is for `Adobe Commerce`
+> - `Shopware6` - Planed Soon
+> - `SFCC` - Planned Soon
+
+## Getting Started
 1. Clone the repo
 2. `cd` into the project folder (`/plugin-beauty-logreader`) and create a virtual environment for this python app, replacing `{name_of_your_env}` (example: `env`)
 ```
@@ -39,18 +41,11 @@ Now plugin files are prettier to look at (Should start in your [localhost](http:
 
 </details>
 
-<details>
 
-
-<summary><b>How To import logs into the app</b></summary>
+## How To import logs into the app
 
 You can select one (or many) files using the File Import functionality. App will add all of the log entries together and display them as a table (same as above). 
 It will also save the case to avoid having to reimport everything again each time the app is closed.
 
 ![image](https://github.com/carlosperales95/plugin-beauty-logreader/assets/8956411/b1e48d68-63be-4df2-be20-be7c81121ddc)
-
-</details>
-
-> [!IMPORTANT]
-> At the moment the only supported plugin formats are `Adobe Commerce`
 
