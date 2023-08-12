@@ -1,12 +1,14 @@
 body {
     /* background-color: blue; */
     min-width: 1200px;
+    min-height: 160vh;
+
 }
 
 main {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    margin: 0;
 }
 
 .container {
@@ -25,6 +27,7 @@ main {
     z-index: 600;
     height: 100%;
     background-color: #009879;
+    min-height: 140vh;
 }
 
 .list-group-item.active {
