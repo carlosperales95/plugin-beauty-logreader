@@ -32,7 +32,7 @@ case_names = []
 def index():
     global df, filtered_df, cases_path, case_names
     case_names = get_cases(cases_path)
-    return render_template('index.html', case_dirs=case_names)
+    return render_template('index.html', case_dirs=case_names, no_filters=filters_empty(df_filters))
 
 @app.route('/upload')
 def show_upload():
@@ -120,7 +120,8 @@ def show_filtered(filename):
                         zip = zip,
                         filters = df_filters,
                         link_column = "content",
-                        case_dirs=case_names)
+                        case_dirs=case_names,
+                        active_filters = not filters_empty(df_filters))
 
 @app.route('/<filename>/remove-filter', methods=['POST'])
 def remove_filter(filename):
@@ -271,3 +272,12 @@ def get_cases(rootdir):
         if os.path.isdir(d):
             paths.append(d)
     return paths
+
+def filters_empty(filters):
+    empty_filters = {
+        'date': [],
+        'type': [],
+        'find': [],
+        'uid': []
+    }
+    return empty_filters == filters
