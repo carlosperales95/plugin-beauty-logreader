@@ -7,7 +7,7 @@ Current Compatibilities:
 
 1. Clone the repo
 2. `cd` into the project folder (`/plugin-beauty-logreader`) and create a virtual environment for this python app
-   In the below command, replace `{name_of_your_env}` (example: `env`)
+In the below command, replace `{name_of_your_env}` (example: `env`)
 ```
 python -m venv {name_of_your_env}
 ```
