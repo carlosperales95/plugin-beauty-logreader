@@ -12,45 +12,116 @@
     <div id="workspace-container">
     {% if row_data %}
         <div class="filter-bar">
-            <form method="POST" action="{{ url_for('filter_df') }}" enctype="multipart/form-data" class="filter-form">
-                <p><label for="">From</label><input type="datetime-local" name="start-date" my-date-format="YYYY/MM/DDThh:mm:ss"></p>
-                <p><label for="">To</label><input type="datetime-local" name="end-date" my-date-format="YYYY/MM/DDThh:mm:ss"></p>
-                <p><label for="">UID</label><input type="dropdown" name="uid" ></p>
-                <p><label for="">Find</label><input type="text" name="find" ></p>
+            <form method="POST"
+            action="{{ url_for('filter_df', filename=file_uid) }}"
+            enctype="multipart/form-data"
+            class="filter-form">
+                <p>
+                    <label for="">
+                        From
+                    </label>
+                    <input
+                    type="datetime-local"
+                    name="start-date"
+                    my-date-format="YYYY/MM/DDThh:mm:ss">
+                </p>
+                <p>
+                    <label for="">
+                        To
+                    </label>
+                    <input
+                    type="datetime-local"
+                    name="end-date"
+                    my-date-format="YYYY/MM/DDThh:mm:ss">
+                </p>
+                <p>
+                    <label for="">
+                        UID
+                    </label>
+                    <input type="dropdown" name="uid">
+                </p>
+                <p>
+                    <label for="">
+                        Find
+                    </label>
+                    <input type="text" name="find" >
+                </p>
                 <p>
                     <label for="">Type</label>
                     <select name="type">
                         <option value="NONE">-</option>
                         <option value="INFO">INFO</option>
-                        <option value="NOTIFICATION">NOTIFICATION</option>
+                        <option value="ADYEN_NOTIFICATION">NOTIFICATION</option>
                         <option value="DEBUG">DEBUG</option>
                         <option value="ERROR">ERROR</option>
                     </select>
                 </p>
-                <p><label for=""></label><input type="submit" value="Apply"></p>
+                <p>
+                    <label for=""></label>
+                    <input type="submit" value="Apply">
+                </p>
             </form>
             {% if filters %}
             <div class="applied-filter-bar">
                 <div class="filter-items">
                     {% for date in filters['date'] %}
-                        <p class="filter-item">{{date[0]}} - {{date[1]}} <span>&#x2715</span></p>
+                        <div class="filter-item">
+                            {{date[0]}} - {{date[1]}}
+                            <form method="POST"
+                            action="{{ url_for('remove_filter', filename=file_uid) }}"
+                            enctype="multipart/form-data">
+                                <input type="hidden" name="date" value={{date[0]}}>
+                                <input type="submit" value=&#x2715>
+                            </form>
+                        </div>
                     {% endfor %}
                     {% for uid in filters['uid'] %}
-                        <p class="filter-item">uid: {{uid}} <span>&#x2715</span></p>
+                        <div class="filter-item">
+                            uid: {{uid}}
+                            <form method="POST"
+                            action="{{ url_for('remove_filter', filename=file_uid) }}"
+                            enctype="multipart/form-data">
+                                <input type="hidden" name="uid" value={{uid}}>
+                                <input type="submit" value=&#x2715>
+                            </form>
+                        </div>
                     {% endfor %}
                     {% for text in filters['find'] %}
-                        <p class="filter-item">"{{text}}" <span>&#x2715</span></p>
+                        <div class="filter-item">
+                            "{{text}}"
+                            <form method="POST"
+                            action="{{ url_for('remove_filter', filename=file_uid) }}"
+                            enctype="multipart/form-data">
+                                <input type="hidden" name="find" value={{text}}>
+                                <input type="submit" value=&#x2715>
+                            </form>
+                        </div>
                     {% endfor %}
                     {% for type in filters['type'] %}
-                        <p class="filter-item">type: {{type}} <span>&#x2715</span></p>
+                        <div class="filter-item">
+                            type: {{type}}
+                            <form method="POST"
+                            action="{{ url_for('remove_filter', filename=file_uid) }}"
+                            enctype="multipart/form-data">
+                                <input type="hidden" name="type" value={{type}}>
+                                <input type="submit" value=&#x2715>
+                            </form>
+                        </div>
                     {% endfor %}
                 </div>
-                <p><label for=""></label><input type="submit" class="btn-secondary" value="Clear"></p>
+                <p>
+                    <label for=""></label>
+                    <form
+                    method="GET"
+                    action="{{ url_for('clear_filter', filename=file_uid) }}">
+                        <input type="submit" class="btn-secondary" value="Clear">
+                    </form>
+                </p>
             </div>
             {% endif %}
         </div>
         {% if pagination %}
-            {{ pagination.links }}
+            <!-- {{ pagination.links }} -->
         {% endif %}
         <table>
             <tr>
@@ -135,6 +206,5 @@
             target.innerHTML = '&darr;';
 
         }
-        </script>
-
+    </script>
 {% endblock %}
