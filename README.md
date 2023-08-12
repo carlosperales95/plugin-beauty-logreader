@@ -29,10 +29,19 @@ python -m pip install -r requirements.txt
 ```
 flask run
 ```
-Ready! Now plugin files are prettier to look at (Should start in your [localhost](http://127.0.0.1:5000/))
+<details>
+<summary><b>Ready!</b></summary>
+Now plugin files are prettier to look at (Should start in your [localhost](http://127.0.0.1:5000/))
 ![image](https://github.com/carlosperales95/plugin-beauty-logreader/assets/8956411/f3264ebf-d397-4881-9de1-2d953f33a30d)
+</details>
 
-7. To import logs into the app
-You can select one (or many) files using the File Import functionality. App will add all of the log entries together and display them as a table (same as above)
+<details>
+<summary><b>How To import logs into the app</b></summary>
+You can select one (or many) files using the File Import functionality. App will add all of the log entries together and display them as a table (same as above). 
+It will also save the case to avoid having to reimport everything again each time the app is closed.
 ![image](https://github.com/carlosperales95/plugin-beauty-logreader/assets/8956411/b1e48d68-63be-4df2-be20-be7c81121ddc)
+</details>
+
+> [!IMPORTANT]
+> At the moment the only supported plugin formats are `Adobe Commerce`
 
